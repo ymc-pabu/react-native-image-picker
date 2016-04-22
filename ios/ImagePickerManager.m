@@ -381,7 +381,7 @@ RCT_EXPORT_METHOD(showImagePicker:(NSDictionary *)options callback:(RCTResponseS
                 NSString *dataString = [data base64EncodedStringWithOptions:0]; // base64 encoded image string
                 [response setObject:dataString forKey:@"data"];
             }
-
+            
             BOOL vertical = (image.size.width < image.size.height) ? YES : NO;
             [response setObject:@(vertical) forKey:@"isVertical"];
             NSURL *fileURL = [NSURL fileURLWithPath:path];
@@ -423,6 +423,9 @@ RCT_EXPORT_METHOD(showImagePicker:(NSDictionary *)options callback:(RCTResponseS
 
             [response setObject:videoDestinationURL.absoluteString forKey:@"uri"];
         }
+
+        BOOL fromCameraRoll = (picker.sourceType == UIImagePickerControllerSourceTypePhotoLibrary) ? YES : NO;
+        [response setObject:@(fromCameraRoll) forKey:@"isFromCameraRoll"];
 
         // If storage options are provided, check the skipBackup flag
         if ([self.options objectForKey:@"storageOptions"] && [[self.options objectForKey:@"storageOptions"] isKindOfClass:[NSDictionary class]]) {
